@@ -6,13 +6,17 @@ class ClinicCard extends StatelessWidget {
   final double rating;
   final int reviews;
   final String imagePath; // Chemin de l'image locale
+  final String distance; // Distance en kilomètres
+  final String time; // Temps en minutes
 
   ClinicCard({
     required this.name,
     required this.address,
     required this.rating,
     required this.reviews,
-    required this.imagePath, // Ajout du chemin de l'image
+    required this.imagePath,
+    required this.distance, // Ajout de la distance
+    required this.time, // Ajout du temps
   });
 
   // Fonction pour générer les étoiles en fonction de la note
@@ -102,13 +106,13 @@ class ClinicCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligne les éléments à gauche et à droite
                 children: [
-                  // Icône de localisation avec une fausse valeur
+                  // Icône de localisation avec la distance et le temps
                   Row(
                     children: [
                       Icon(Icons.location_on, color: Colors.blue, size: 20),
                       SizedBox(width: 5),
                       Text(
-                        "2km/40min",
+                        "$distance/$time", // Utilisation des paramètres distance et time
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey[600],

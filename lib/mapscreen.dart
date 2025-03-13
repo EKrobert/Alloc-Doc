@@ -11,10 +11,8 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final MapController mapController = MapController();
   LatLng? _selectedClinicPosition; // Position de la clinique sélectionnée
-  final TextEditingController _searchController =
-      TextEditingController(); // Contrôleur pour la barre de recherche
-  List<Map<String, dynamic>> filteredClinics =
-      []; // Liste filtrée des cliniques
+  final TextEditingController _searchController = TextEditingController(); // Contrôleur pour la barre de recherche
+  List<Map<String, dynamic>> filteredClinics = []; // Liste filtrée des cliniques
 
   final List<Map<String, dynamic>> clinics = [
     {
@@ -25,6 +23,8 @@ class _MapScreenState extends State<MapScreen> {
       "position": LatLng(45.691563, -122.727433), // Coin supérieur gauche
       "imagePath": "assets/clinic/cl1.jpg",
       "markerImage": "assets/markers/marker1.jpg",
+      "distance": "2km", // Ajout de la distance
+      "time": "40min", // Ajout du temps
     },
     {
       "name": "City Medical Center",
@@ -34,6 +34,8 @@ class _MapScreenState extends State<MapScreen> {
       "position": LatLng(45.691563, -122.687433), // Coin supérieur droit
       "imagePath": "assets/clinic/cl2.jpg",
       "markerImage": "assets/markers/marker2.jpg",
+      "distance": "3km", // Ajout de la distance
+      "time": "45min", // Ajout du temps
     },
     {
       "name": "Green Valley Hospital",
@@ -41,8 +43,10 @@ class _MapScreenState extends State<MapScreen> {
       "rating": 4.5,
       "reviews": 90,
       "position": LatLng(45.651563, -122.727433), // Coin inférieur gauche
-      "imagePath": "assets/clinic/cl1.jpg",
+      "imagePath": "assets/clinic/cl3.png",
       "markerImage": "assets/markers/marker3.jpg",
+      "distance": "4km", // Ajout de la distance
+      "time": "50min", // Ajout du temps
     },
     {
       "name": "Blue Sky Clinic",
@@ -50,8 +54,10 @@ class _MapScreenState extends State<MapScreen> {
       "rating": 4.7,
       "reviews": 110,
       "position": LatLng(45.651563, -122.687433), // Coin inférieur droit
-      "imagePath": "assets/clinic/cl2.jpg",
+      "imagePath": "assets/clinic/cl4.jpeg",
       "markerImage": "assets/markers/marker4.jpg",
+      "distance": "6km", // Ajout de la distance
+      "time": "51min", // Ajout du temps
     },
     {
       "name": "Golden Health Center",
@@ -59,8 +65,10 @@ class _MapScreenState extends State<MapScreen> {
       "rating": 4.9,
       "reviews": 150,
       "position": LatLng(45.671563, -122.707433), // Centre du rectangle
-      "imagePath": "assets/clinic/cl1.jpg",
+      "imagePath": "assets/clinic/cl5.jpg",
       "markerImage": "assets/markers/marker5.jpg",
+      "distance": "9km", // Ajout de la distance
+      "time": "1H", // Ajout du temps
     },
     {
       "name": "Silver Care Clinic",
@@ -68,18 +76,18 @@ class _MapScreenState extends State<MapScreen> {
       "rating": 4.6,
       "reviews": 80,
       "position": LatLng(45.671563, -122.667433), // À droite du centre
-      "imagePath": "assets/clinic/cl2.jpg",
+      "imagePath": "assets/clinic/cl6.jpeg",
       "markerImage": "assets/markers/marker6.jpg",
+      "distance": "10km", // Ajout de la distance
+      "time": "1h02min", // Ajout du temps
     },
   ];
 
   @override
   void initState() {
     super.initState();
-    filteredClinics =
-        clinics; // Initialise la liste filtrée avec toutes les cliniques
-    _searchController.addListener(
-        _filterClinics); // Écoute les changements dans la barre de recherche
+    filteredClinics = clinics; // Initialise la liste filtrée avec toutes les cliniques
+    _searchController.addListener(_filterClinics); // Écoute les changements dans la barre de recherche
   }
 
   @override
@@ -110,8 +118,7 @@ class _MapScreenState extends State<MapScreen> {
             mapController: mapController,
             options: MapOptions(
               center: LatLng(45.671563, -122.707433), // Centre de la carte
-              zoom:
-                  12.0, // Zoom ajusté pour que tous les points soient visibles
+              zoom: 12.0, // Zoom ajusté pour que tous les points soient visibles
               onTap: (_, __) {
                 // Ferme la popup si l'utilisateur clique ailleurs sur la carte
                 setState(() {
@@ -121,8 +128,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 subdomains: ['a', 'b', 'c'],
               ),
               MarkerLayer(
@@ -219,6 +225,8 @@ class _MapScreenState extends State<MapScreen> {
                     rating: clinic["rating"],
                     reviews: clinic["reviews"],
                     imagePath: clinic["imagePath"],
+                    distance: clinic["distance"], // Ajout de la distance
+                    time: clinic["time"], // Ajout du temps
                   );
                 },
               ),
@@ -230,8 +238,7 @@ class _MapScreenState extends State<MapScreen> {
             Positioned(
               left: 16,
               right: 16,
-              bottom:
-                  320, // Ajuste la position pour ne pas chevaucher les cartes en bas
+              bottom: 320, // Ajuste la position pour ne pas chevaucher les cartes en bas
               child: ClinicCard(
                 name: filteredClinics.firstWhere((clinic) =>
                     clinic["position"] == _selectedClinicPosition)["name"],
@@ -243,6 +250,10 @@ class _MapScreenState extends State<MapScreen> {
                     clinic["position"] == _selectedClinicPosition)["reviews"],
                 imagePath: filteredClinics.firstWhere((clinic) =>
                     clinic["position"] == _selectedClinicPosition)["imagePath"],
+                distance: filteredClinics.firstWhere((clinic) =>
+                    clinic["position"] == _selectedClinicPosition)["distance"], // Ajout de la distance
+                time: filteredClinics.firstWhere((clinic) =>
+                    clinic["position"] == _selectedClinicPosition)["time"], // Ajout du temps
               ),
             ),
         ],
