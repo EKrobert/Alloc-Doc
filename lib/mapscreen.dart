@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart'; // Pour la localisation
 import 'clinic_card.dart'; // Import du widget personnalisé
 
 class MapScreen extends StatefulWidget {
@@ -13,6 +14,7 @@ class _MapScreenState extends State<MapScreen> {
   LatLng? _selectedClinicPosition; // Position de la clinique sélectionnée
   final TextEditingController _searchController = TextEditingController(); // Contrôleur pour la barre de recherche
   List<Map<String, dynamic>> filteredClinics = []; // Liste filtrée des cliniques
+  LatLng? _userLocation; // Position de l'utilisateur
 
   final List<Map<String, dynamic>> clinics = [
     {
@@ -88,12 +90,57 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     filteredClinics = clinics; // Initialise la liste filtrée avec toutes les cliniques
     _searchController.addListener(_filterClinics); // Écoute les changements dans la barre de recherche
+    _getUserLocation(); // Obtient la localisation de l'utilisateur au démarrage
   }
 
   @override
   void dispose() {
     _searchController.dispose(); // Nettoie le contrôleur
     super.dispose();
+  }
+
+  // Fonction pour obtenir la localisation de l'utilisateur
+  void _getUserLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Si le service de localisation est désactivé, demande à l'utilisateur de l'activer
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Veuillez activer la localisation pour utiliser cette fonctionnalité.")),
+      );
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Si l'utilisateur refuse la permission, affiche un message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("La permission de localisation est requise.")),
+        );
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Si l'utilisateur a refusé la permission de manière permanente
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("La permission de localisation est refusée de manière permanente.")),
+      );
+      return;
+    }
+
+    // Obtient la position actuelle de l'utilisateur
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    setState(() {
+      _userLocation = LatLng(position.latitude, position.longitude);
+    });
+
+    // Centre la carte sur la position de l'utilisateur
+    mapController.move(_userLocation!, 15.0);
   }
 
   // Fonction pour filtrer les cliniques en fonction de la recherche
@@ -117,8 +164,8 @@ class _MapScreenState extends State<MapScreen> {
           FlutterMap(
             mapController: mapController,
             options: MapOptions(
-              center: LatLng(45.671563, -122.707433), // Centre de la carte
-              zoom: 12.0, // Zoom ajusté pour que tous les points soient visibles
+              center: _userLocation ?? LatLng(45.671563, -122.707433), // Centre sur la position de l'utilisateur ou une position par défaut
+              zoom: 12.0,
               onTap: (_, __) {
                 // Ferme la popup si l'utilisateur clique ailleurs sur la carte
                 setState(() {
@@ -132,38 +179,54 @@ class _MapScreenState extends State<MapScreen> {
                 subdomains: ['a', 'b', 'c'],
               ),
               MarkerLayer(
-                markers: filteredClinics.map((clinic) {
-                  return Marker(
-                    point: clinic["position"],
-                    width: 50.0, // Taille du marqueur
-                    height: 50.0,
-                    builder: (ctx) => GestureDetector(
-                      onTap: () {
-                        // Affiche la popup pour cette clinique
-                        setState(() {
-                          _selectedClinicPosition = clinic["position"];
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.purple, // Contour violet
-                            width: 2.0,
+                markers: [
+                  // Marqueur pour la position de l'utilisateur
+                  if (_userLocation != null)
+                    Marker(
+                      point: _userLocation!,
+                      width: 40.0,
+                      height: 40.0,
+                      builder: (ctx) => Icon(
+                        Icons.location_on,
+                        color: Colors.blue,
+                        size: 40.0,
+                      ),
+                    ),
+
+                  // Marqueurs pour les cliniques
+                  ...filteredClinics.map((clinic) {
+                    return Marker(
+                      point: clinic["position"],
+                      width: 50.0,
+                      height: 50.0,
+                      builder: (ctx) => GestureDetector(
+                        onTap: () {
+                          // Affiche la popup pour cette clinique
+                          setState(() {
+                            _selectedClinicPosition = clinic["position"];
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.purple,
+                              width: 2.0,
+                            ),
                           ),
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            clinic["markerImage"], // Image du marqueur
-                            width: 46.0, // Taille de l'image
-                            height: 46.0,
-                            fit: BoxFit.cover,
+                          child: ClipOval(
+                            child: Image.asset(
+                              clinic["markerImage"],
+                              width: 46.0,
+                              height: 46.0,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ],
               ),
             ],
           ),
@@ -212,7 +275,7 @@ class _MapScreenState extends State<MapScreen> {
             right: 0,
             bottom: 16,
             child: Container(
-              height: 280, // Hauteur augmentée pour les cartes des détails
+              height: 280,
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 scrollDirection: Axis.horizontal,
@@ -225,8 +288,8 @@ class _MapScreenState extends State<MapScreen> {
                     rating: clinic["rating"],
                     reviews: clinic["reviews"],
                     imagePath: clinic["imagePath"],
-                    distance: clinic["distance"], // Ajout de la distance
-                    time: clinic["time"], // Ajout du temps
+                    distance: clinic["distance"],
+                    time: clinic["time"],
                   );
                 },
               ),
@@ -238,7 +301,7 @@ class _MapScreenState extends State<MapScreen> {
             Positioned(
               left: 16,
               right: 16,
-              bottom: 320, // Ajuste la position pour ne pas chevaucher les cartes en bas
+              bottom: 320,
               child: ClinicCard(
                 name: filteredClinics.firstWhere((clinic) =>
                     clinic["position"] == _selectedClinicPosition)["name"],
@@ -251,9 +314,9 @@ class _MapScreenState extends State<MapScreen> {
                 imagePath: filteredClinics.firstWhere((clinic) =>
                     clinic["position"] == _selectedClinicPosition)["imagePath"],
                 distance: filteredClinics.firstWhere((clinic) =>
-                    clinic["position"] == _selectedClinicPosition)["distance"], // Ajout de la distance
+                    clinic["position"] == _selectedClinicPosition)["distance"],
                 time: filteredClinics.firstWhere((clinic) =>
-                    clinic["position"] == _selectedClinicPosition)["time"], // Ajout du temps
+                    clinic["position"] == _selectedClinicPosition)["time"],
               ),
             ),
         ],
