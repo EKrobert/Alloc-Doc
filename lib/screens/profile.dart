@@ -10,6 +10,8 @@ class ProfileScreen extends StatelessWidget {
         title: const Text('Profile'),
         backgroundColor: const Color.fromRGBO(22, 42, 58, 1),
         foregroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
