@@ -1,47 +1,62 @@
-import 'package:allodoc/screens/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:allodoc/screens/home.dart';
+import 'package:allodoc/screens/login.dart'; // Importez votre écran de login
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        // Permet le défilement pour éviter le débordement
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Logo personnalisé
               Image.asset(
-                'assets/logos/logo.jpeg', 
+                'assets/logos/logo.jpeg', // Remplacez par le chemin de votre logo
                 width: 100,
                 height: 100,
               ),
               const SizedBox(height: 20),
               const Text(
-                'Hi, Welcome Back!',
+                'Create Account',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               const Text(
-                'Hope you are doing fine',
+                'Sign up to get started',
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 30),
 
+              // Champ nom avec icône
+              TextFormField(
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  labelText: 'Your Name',
+                  prefixIcon:
+                      Icon(Icons.person, color: Colors.black),
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter your full name',
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 20),
+
               // Champ email avec icône
               TextFormField(
-                style: const TextStyle(color: Colors.black), 
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: 'Email',
                   prefixIcon:
-                      Icon(Icons.email, color: Colors.black), 
+                      Icon(Icons.email, color: Colors.black),
                   border: OutlineInputBorder(),
                   hintText: 'Your Email',
-                  hintStyle:
-                      TextStyle(color: Colors.grey), 
+                  hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
               const SizedBox(height: 20),
@@ -49,38 +64,51 @@ class LoginScreen extends StatelessWidget {
               // Champ mot de passe avec icône
               TextFormField(
                 obscureText: true,
-                style: const TextStyle(color: Colors.black), 
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: 'Password',
                   prefixIcon:
-                      Icon(Icons.lock, color: Colors.black), 
+                      Icon(Icons.lock, color: Colors.black),
                   border: OutlineInputBorder(),
-                  hintText: 'Password',
-                  hintStyle:
-                      TextStyle(color: Colors.grey), 
+                  hintText: 'Create Password',
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Champ confirmation mot de passe avec icône
+              TextFormField(
+                obscureText: true,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon:
+                      Icon(Icons.lock, color: Colors.black),
+                  border: OutlineInputBorder(),
+                  hintText: 'Confirm Password',
+                  hintStyle: TextStyle(color: Colors.grey),
                 ),
               ),
               const SizedBox(height: 20),
 
               ElevatedButton(
                 onPressed: () {
+                  // Logique d'inscription
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const HomeScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:  const Color.fromRGBO(22, 42, 58, 1),
-                  foregroundColor: Colors.white, 
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15), 
-                  minimumSize: const Size(double.infinity,50), 
+                  backgroundColor: const Color.fromRGBO(22, 42, 58, 1),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(25), 
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
-                child: const Text('Sign In'),
+                child: const Text('Sign Up'),
               ),
               const SizedBox(height: 20),
 
@@ -97,92 +125,82 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Bouton "Sign in with Google"
+              // Bouton "Sign up with Google"
               ElevatedButton(
                 onPressed: () {
+                  // Logique pour Google
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white, 
-                  foregroundColor: Colors.black, 
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
-                    side: const BorderSide(color: Colors.grey), 
+                    side: const BorderSide(color: Colors.grey),
                   ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/logos/google.png', 
+                      'assets/google.png',
                       width: 24,
                       height: 24,
                     ),
                     const SizedBox(width: 10),
-                    const Text('Sign in with Google'),
+                    const Text('Sign up with Google'),
                   ],
                 ),
               ),
               const SizedBox(height: 10),
 
-              // Bouton "Sign in with Facebook"
+              // Bouton "Sign up with Facebook"
               ElevatedButton(
                 onPressed: () {
-                  
+                  // Logique pour Facebook
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white, 
-                  foregroundColor: Colors.black, 
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
-                    side: const BorderSide(color: Colors.grey), 
+                    side: const BorderSide(color: Colors.grey),
                   ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/logos/facebook.png', 
+                      'assets/facebook.png',
                       width: 24,
                       height: 24,
                     ),
                     const SizedBox(width: 10),
-                    const Text('Sign in with Facebook'),
+                    const Text('Sign up with Facebook'),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
 
-              // Forgot password
-              TextButton(
-                onPressed: () {
-                  
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue),
-                child: const Text('Forgot Password?'),
-              ),
-              const SizedBox(height: 10),
-
-              // Lien "sign up"
+              // Lien pour se connecter
               RichText(
                 text: TextSpan(
-                  style: const TextStyle(color: Colors.black), 
+                  style: const TextStyle(color: Colors.black),
                   children: [
-                    const TextSpan(text: "Don't have any account yet? "),
+                    const TextSpan(text: "Already have an account? "),
                     WidgetSpan(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
                           );
                         },
                         child: const Text(
-                          'Sign up',
+                          'Sign in',
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),
@@ -190,6 +208,7 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

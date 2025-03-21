@@ -1,3 +1,7 @@
+import 'package:allodoc/home/home_screen.dart';
+import 'package:allodoc/mapscreen.dart';
+import 'package:allodoc/screens/booking/my_bokings.dart';
+import 'package:allodoc/screens/profile.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,30 +16,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Liste des pages correspondant aux onglets
   final List<Widget> _pages = [
-    const Center(
-      child: Text(
-        'Home Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
-    const Center(
-      child: Text(
-        'Localisation',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
-    const Center(
-      child: Text(
-        'Calendrier',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
-    const Center(
-      child: Text(
-        'Profil',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    ),
+    HomePage(),
+    MapScreen(),
+    BookingPage(),
+    ProfileScreen()
   ];
 
   // Fonction pour gérer le changement d'onglet
@@ -52,22 +36,24 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        type: BottomNavigationBarType
+            .fixed, // Assure que les icônes ne bougent pas
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: '', 
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
-            label: 'Localisation',
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Calendrier',
+            icon: Icon(Icons.calendar_today_sharp), 
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profil',
+            label: '',
           ),
         ],
         selectedItemColor: Colors.blue,

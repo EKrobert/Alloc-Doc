@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
 import 'splash2.dart'; 
 
-class Splash1 extends StatelessWidget {
+class Splash1 extends StatefulWidget {
   const Splash1({super.key});
+
+  @override
+  _Splash1State createState() => _Splash1State();
+}
+
+class _Splash1State extends State<Splash1> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Splash2()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +27,7 @@ class Splash1 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/splash1.jpg'), 
+            Image.asset("assets/splashs/s.jpg"),
             const SizedBox(height: 20),
             const Text(
               'Bienvenue sur Allo Doc',
@@ -19,15 +35,6 @@ class Splash1 extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const Splash2()),
-          );
-        },
-        child: const Icon(Icons.arrow_forward),
       ),
     );
   }

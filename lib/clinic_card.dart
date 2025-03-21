@@ -5,9 +5,9 @@ class ClinicCard extends StatelessWidget {
   final String address;
   final double rating;
   final int reviews;
-  final String imagePath; // Chemin de l'image locale
-  final String distance; // Distance en kilomètres
-  final String time; // Temps en minutes
+  final String imagePath; 
+  final String distance; 
+  final String time; 
 
   ClinicCard({
     required this.name,
@@ -15,8 +15,8 @@ class ClinicCard extends StatelessWidget {
     required this.rating,
     required this.reviews,
     required this.imagePath,
-    required this.distance, // Ajout de la distance
-    required this.time, // Ajout du temps
+    required this.distance, 
+    required this.time, 
   });
 
   // Fonction pour générer les étoiles en fonction de la note
@@ -35,7 +35,7 @@ class ClinicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300, // Largeur inchangée
+      width: 300,
       margin: EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9), // Fond semi-transparent
@@ -48,20 +48,19 @@ class ClinicCard extends StatelessWidget {
           ),
         ],
       ),
-      child: SingleChildScrollView( // Permet le défilement si le contenu est trop long
+      child: SingleChildScrollView( 
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image de l'hôpital (taille réduite)
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
-                  imagePath, // Chemin de l'image locale
-                  width: double.infinity, // Prend toute la largeur
-                  height: 100, // Hauteur réduite pour l'image
-                  fit: BoxFit.cover, // Ajuste l'image pour couvrir l'espace
+                  imagePath, 
+                  width: double.infinity, 
+                  height: 100, 
+                  fit: BoxFit.cover, 
                 ),
               ),
               SizedBox(height: 10),
@@ -104,9 +103,8 @@ class ClinicCard extends StatelessWidget {
 
               // Ligne du bas avec localisation et tag "Hospital"
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligne les éléments à gauche et à droite
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                 children: [
-                  // Icône de localisation avec la distance et le temps
                   Row(
                     children: [
                       Icon(Icons.location_on, color: Colors.blue, size: 20),

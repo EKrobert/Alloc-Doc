@@ -1,6 +1,8 @@
+import 'package:allodoc/screens/login.dart';
+import 'package:allodoc/screens/widgets/indicateur.dart';
 import 'package:flutter/material.dart';
-import 'splash4.dart'; // Prochain écran
-import '../widgets/custom_button.dart'; // Bouton personnalisé
+import 'splash4.dart'; 
+import '../widgets/custom_button.dart'; 
 
 class Splash3 extends StatelessWidget {
   const Splash3({super.key});
@@ -8,32 +10,55 @@ class Splash3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Titre du troisième écran',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Description du troisième écran',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            ),
-            const Spacer(),
-            CustomButton(
-              text: 'Suivant',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Splash4()),
-                );
-              },
-            ),
-          ],
+      body: SingleChildScrollView( 
+        child: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/splashs/splash3.png',
+                width: double.infinity, 
+                fit: BoxFit.cover, 
+                height: 450,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Connect with Specialists',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Connect with Specialized Doctors Online for Convenient and Comprehensive Medical Consultations.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              DotIndicator(currentIndex: 1, totalDots: 3), 
+              const SizedBox(height: 20),
+              CustomButton(
+                text: 'Next',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Splash4()),
+                  );
+                },
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
+                },
+                child: const Text(
+                  'Skip',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
