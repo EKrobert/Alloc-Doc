@@ -9,37 +9,36 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        // Permet de faire défiler l'écran pour éviter le débordement
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. En-tête avec location et icône de notification
+              // En-tête avec location et icône de notification
               _buildHeader(),
               const SizedBox(height: 20),
 
-              // 2. Barre de recherche
+              // Barre de recherche
               _buildSearchBar(),
               const SizedBox(height: 20),
 
-              // 3. Bannières (au moins 3)
+              // Bannières 
               _buildBanners(),
               const SizedBox(height: 20),
 
-              // 4. Titre "Categories" et "See All"
+              // Titre "Categories" et "See All"
               _buildSectionTitle(title: 'Categories', seeAll: true),
               const SizedBox(height: 10),
 
-              // 5. Icônes des catégories (4 par ligne, 2 lignes)
+              // Icônes des catégories (4 par ligne, 2 lignes)
               _buildCategoryIcons(),
               const SizedBox(height: 20),
 
-              // 6. Titre "Nearby Medical Center" et "See All"
+              // Titre "Nearby Medical Center" et "See All"
               _buildSectionTitle(title: 'Nearby Medical Center', seeAll: true),
               const SizedBox(height: 10),
 
-              // 7. Images défilantes avec un petit titre
+              // Images défilantes avec un petit titre
               _buildNearbyClinics(),
             ],
           ),
@@ -66,7 +65,7 @@ class HomePage extends StatelessWidget {
                 Icon(Icons.location_on, color: Colors.blue, size: 20),
                 SizedBox(width: 4),
                 Text(
-                  'Raba, Maroc',
+                  'Rabat, Maroc',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -76,14 +75,13 @@ class HomePage extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.notifications, size: 30),
           onPressed: () {
-            // Logique pour les notifications
           },
         ),
       ],
     );
   }
 
-  // 2. Barre de recherche
+  // Barre de recherche
   Widget _buildSearchBar() {
     return TextField(
       decoration: InputDecoration(
@@ -99,8 +97,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // 3. Bannières (au moins 3)
-  // 3. Bannières avec carrousel automatique et points indicateurs
+  // Bannières
+  // Bannières avec carrousel automatique et points indicateurs
 Widget _buildBanners() {
   final List<String> bannerImages = [
     'assets/banners/banner5.png',
@@ -117,17 +115,16 @@ Widget _buildBanners() {
           return _buildBanner(bannerImages[index]);
         }),
         options: CarouselOptions(
-          height: 150, // Hauteur des bannières
+          height: 150, 
           autoPlay: true, // Défilement automatique
           autoPlayInterval: const Duration(seconds: 3), // Intervalle de 3 secondes
           autoPlayAnimationDuration: const Duration(milliseconds: 800), // Durée de l'animation
-          autoPlayCurve: Curves.fastOutSlowIn, // Courbe d'animation
-          enlargeCenterPage: true, // Agrandir la bannière centrale
-          viewportFraction: 0.9, // Fraction de la vue occupée par chaque bannière
+          autoPlayCurve: Curves.fastOutSlowIn, 
+          enlargeCenterPage: true, 
+          viewportFraction: 0.9, 
         ),
       ),
       const SizedBox(height: 10),
-      // Points indicateurs
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(bannerImages.length, (index) {
@@ -137,7 +134,7 @@ Widget _buildBanners() {
             margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: index == 0 ? Colors.blue : Colors.grey, // Couleur du point actif
+              color: index == 0 ? Colors.blue : Colors.grey, 
             ),
           );
         }),
@@ -160,7 +157,7 @@ Widget _buildBanner(String imagePath) {
   );
 }
 
-  // 4. Titre de section avec "See All"
+  // Titre de section avec "See All"
   Widget _buildSectionTitle({required String title, bool seeAll = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,7 +169,6 @@ Widget _buildBanner(String imagePath) {
         if (seeAll)
           TextButton(
             onPressed: () {
-              // Logique pour "See All"
             },
             child: const Text(
               'See All',
@@ -183,7 +179,7 @@ Widget _buildBanner(String imagePath) {
     );
   }
 
-  // 5. Icônes des catégories (4 par ligne, 2 lignes)
+  // Icônes des catégories 4*2
   Widget _buildCategoryIcons() {
     final List<Map<String, String>> categories = [
       {'icon': 'assets/categories/dentist.png', 'name': 'Dentistry'},
@@ -198,7 +194,7 @@ Widget _buildBanner(String imagePath) {
 
     return GridView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(), // Désactive le défilement interne
+      physics: const NeverScrollableScrollPhysics(), 
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4, // 4 icônes par ligne
         crossAxisSpacing: 10,
@@ -224,10 +220,9 @@ Widget _buildBanner(String imagePath) {
     );
   }
 
-  // 7. Images défilantes avec un petit titre
-  // 7. Liste des cliniques proches (horizontal)
+
 Widget _buildNearbyClinics() {
-  // Liste des cliniques (vous pouvez remplacer par des données dynamiques)
+  // Liste des cliniques 
   final List<ClinicCard> clinics = [
     ClinicCard(
       name: 'Clinique du Nord',
@@ -243,9 +238,9 @@ Widget _buildNearbyClinics() {
       address: '456 Avenue des Médecins, Lyon',
       rating: 4.2,
       reviews: 95,
-      imagePath: 'assets/clinic/cl4.jpeg', // Chemin de l'image locale
-      distance: '3.0 km', // Distance en kilomètres
-      time: '15 mins', // Temps en minutes
+      imagePath: 'assets/clinic/cl4.jpeg', 
+      distance: '3.0 km', 
+      time: '15 mins', 
     ),
     ClinicCard(
       name: 'Centre Médical Sud',
@@ -259,10 +254,10 @@ Widget _buildNearbyClinics() {
   ];
 
   return SizedBox(
-    height: 220, // Hauteur fixe pour la liste horizontale
+    height: 220, 
     child: ListView(
-      scrollDirection: Axis.horizontal, // Défilement horizontal
-      children: clinics, // Utilisez la liste des cliniques
+      scrollDirection: Axis.horizontal, 
+      children: clinics,
     ),
   );
 }
